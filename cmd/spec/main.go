@@ -2,13 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 func main() {
-	raw, err := ioutil.ReadFile("./_spec.json")
+	debug := false
+
+	raw, err := ioutil.ReadFile("./spec.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -16,6 +20,7 @@ func main() {
 	var spec SpecFile
 	json.Unmarshal(raw, &spec)
 
+	os.Mkdir("./spec", 0755)
 	for _, val := range spec {
 		filename := val.Entrypoint + ".json"
 		var file OutFile
@@ -30,8 +35,11 @@ func main() {
 			val.applyToOutFile(&file)
 		}
 		raw, _ := json.MarshalIndent(file, "", "  ")
-		ioutil.WriteFile("./"+filename, raw, 0644)
+		ioutil.WriteFile("./spec/"+filename, raw, 0644)
+		fmt.Println(filename)
 	}
 
-	spew.Dump(spec)
+	if debug {
+		spew.Dump(spec)
+	}
 }
