@@ -23,7 +23,10 @@ func main() {
 		if err != nil {
 			file = val.toOutFile()
 		} else {
-			json.Unmarshal(contents, &file)
+			err = json.Unmarshal(contents, &file)
+			if err != nil {
+				log.Fatal("Error parsing ", filename, ": ", err)
+			}
 			val.applyToOutFile(&file)
 		}
 		raw, _ := json.MarshalIndent(file, "", "  ")

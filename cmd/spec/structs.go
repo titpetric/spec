@@ -7,10 +7,11 @@ import (
 type SpecFile []*SpecEntry
 
 type SpecEntry struct {
-	Title      string
-	Package    string
-	Entrypoint string
-	APIs       map[string]*SpecAPI
+	Title       string
+	Description string
+	Package     string
+	Entrypoint  string
+	APIs        map[string]*SpecAPI
 }
 
 func (s *SpecEntry) toOutFile() OutFile {
@@ -24,6 +25,7 @@ func (s *SpecEntry) toOutFile() OutFile {
 func (s *SpecEntry) applyToOutFile(o *OutFile) {
 	// reset title/interface/path to spec data
 	o.Title = s.Title
+	o.Description = s.Description
 	o.Package = s.Package
 	o.Interface = strings.ToUpper(s.Entrypoint[0:1]) + s.Entrypoint[1:]
 	o.Path = "/" + s.Entrypoint
@@ -46,6 +48,9 @@ func (s *SpecEntry) applyToOutFile(o *OutFile) {
 			call.Title = val.Title
 			call.Method = val.Method
 			call.Path = path
+			if val.Parameters != nil {
+				call.Parameters = val.Parameters
+			}
 		}
 	}
 }
@@ -54,19 +59,22 @@ type SpecAPI struct {
 	Method string
 	Title  string
 	Path   string
+	Parameters map[string]interface{}
 }
 
 type OutFile struct {
-	Title     string
-	Package   string
-	Interface string
-	Path      string
-	APIs      map[string]*OutFileAPI
+	Title       string
+	Description string `json:",omitempty"`
+	Package     string
+	Interface   string
+	Path        string
+	APIs        map[string]*OutFileAPI
 }
 
 type OutFileAPI struct {
 	Method     string
 	Title      string
+	Description string `json:",omitempty"`
 	Path       string
 	Parameters map[string]interface{}
 }
