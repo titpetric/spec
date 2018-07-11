@@ -13,6 +13,7 @@ type SpecEntry struct {
 	Protocol       string
 	Authentication []string
 	Entrypoint     string
+	Struct         interface{}
 	APIs           []*SpecAPI
 }
 
@@ -31,6 +32,7 @@ func (s *SpecEntry) applyToOutFile(o *OutFile) {
 	o.Package = s.Package
 	o.Interface = strings.ToUpper(s.Entrypoint[0:1]) + s.Entrypoint[1:]
 	o.Path = "/" + s.Entrypoint
+	o.Struct = s.Struct
 	o.Protocol = s.Protocol
 	o.Authentication = s.Authentication
 
@@ -77,6 +79,7 @@ type OutFile struct {
 	Description    string `json:",omitempty"`
 	Package        string
 	Interface      string
+	Struct         interface{}
 	Protocol       string
 	Authentication []string
 	Path           string
