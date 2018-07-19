@@ -15,6 +15,7 @@ type SpecEntry struct {
 	Entrypoint     string
 	Path           string
 	Struct         interface{}
+	Parameters     map[string]interface{}
 	APIs           []*SpecAPI
 }
 
@@ -30,6 +31,7 @@ func (s *SpecEntry) applyToOutFile(o *OutFile) {
 	// reset title/interface/path to spec data
 	o.Title = s.Title
 	o.Description = s.Description
+	o.Parameters = s.Parameters
 	o.Package = s.Package
 	o.Interface = strings.ToUpper(s.Entrypoint[0:1]) + s.Entrypoint[1:]
 	o.Path = s.Path
@@ -84,6 +86,7 @@ type OutFile struct {
 	Package        string
 	Interface      string
 	Struct         interface{}
+	Parameters     map[string]interface{}
 	Protocol       string
 	Authentication []string
 	Path           string
