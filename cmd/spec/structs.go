@@ -13,6 +13,7 @@ type SpecEntry struct {
 	Protocol       string
 	Authentication []string
 	Entrypoint     string
+	Path           string
 	Struct         interface{}
 	APIs           []*SpecAPI
 }
@@ -31,7 +32,10 @@ func (s *SpecEntry) applyToOutFile(o *OutFile) {
 	o.Description = s.Description
 	o.Package = s.Package
 	o.Interface = strings.ToUpper(s.Entrypoint[0:1]) + s.Entrypoint[1:]
-	o.Path = "/" + s.Entrypoint
+	o.Path = s.Path
+	if o.Path == "" {
+		o.Path = "/" + s.Entrypoint
+	}
 	o.Struct = s.Struct
 	o.Protocol = s.Protocol
 	o.Authentication = s.Authentication
