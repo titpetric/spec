@@ -23,4 +23,9 @@ done
 echo "Resulting files:"
 find build -type f | xargs -n1 echo " "
 
-cp build/$PROJECT-linux-amd64 /usr/local/bin/$PROJECT
+if [ -d "/usr/local/bin" ]; then
+	cp build/$PROJECT-linux-amd64 /usr/local/bin/$PROJECT
+fi
+if [ -d "/src/misc/bin" ]; then
+	cp build/$PROJECT-linux-amd64 /src/misc/bin/$PROJECT
+fi
